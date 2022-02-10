@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+if [[ $# -ne 1 ]]; then
+    echo "$0 atom-feed.xml > atom-feed.html" >> /dev/stderr
+    exit 0
+fi
+
+xsltproc <(echo '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                   xmlns:atom="http://www.w3.org/2005/Atom">
+    <xsl:output method="html"/>
+    <xsl:template match="/atom:feed">
+        <html>
+            <head><title><xsl:value-of select="atom:title" /></title></head>
+            <body><h1>Entries</h1>
+            <ul>
+            <xsl:for-each select="atom:entry">
+                <xsl:sort select="atom:published" order="descending" />
+                <li><p><strong><xsl:value-of select="atom:title" /></strong></p>
+                    <p><xsl:value-of select=".//atom:content" disable-output-escaping="yes" /></p>
+                    <p>Published: <xsl:value-of select="atom:published" /></p>
+                </li>
+            </xsl:for-each>
+            </ul>
+            </body>
+        </html>
+    </xsl:template>
+</xsl:stylesheet>') "$@"
