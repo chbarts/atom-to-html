@@ -14,16 +14,16 @@ def make_html(feed):
     air = Airium()
     air('<!DOCTYPE html>')
     lang = "en"
-    if feed.lang:
+    if hasattr(feed, 'lang'):
         lang = feed.lang
     with air.html(lang=lang):
         with air.head():
             air.meta(charset="utf-8")
             air.title(_t=feed.title)
-            if feed.link:
+            if hasattr(feed, 'link'):
                 air.link(href=feed.link, type="application/atom+xml", rel="alternate", title=feed.title)
         with air.body():
-            if feed.link:
+            if hasattr(feed, 'link'):
                 with air.p(klass="link"):
                     air.a(href=feed.link, _t=feed.title)
             with air.div(klass="main"):
@@ -45,17 +45,17 @@ def make_html(feed):
                             for author in item.authors:
                                 with air.li():
                                     air("Author: {0}".format(author.name))
-                                    if author.email:
+                                    if hasattr(author, 'email'):
                                         air.a(href="mailto:{0}".format(author.email), _t=" Email")
-                                    if author.url:
+                                    if hasattr(author, 'uri'):
                                         air.a(href=author.uri, _t=" Link")
                         with air.ol():
                             for contributor in item.contributors:
                                 with air.li():
                                     air("Contributor: {0}".format(contributor.name))
-                                    if contributor.email:
+                                    if hasattr(contributor, 'email'):
                                         air.a(href="mailto:{0}".format(contributor.email), _t=" Email")
-                                    if contributor.uri:
+                                    if hasattr(contributor, 'uri'):
                                         air.a(href=contributor.uri, _t=" Link")
                         with air.div(klass="itemdesc"):
                             air(item.content)
@@ -64,7 +64,7 @@ def make_html(feed):
                                 for link in item.links:
                                     with air.li():
                                         title = "Link"
-                                        if link.title:
+                                        if hasattr(link, 'title'):
                                             title = link.title
                                         air.a(href=link.href, _t=title)
     return str(air)
