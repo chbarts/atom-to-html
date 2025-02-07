@@ -67,6 +67,11 @@ def make_html(feed):
                                         air.a(href="mailto:{0}".format(contributor.email), _t=" Email")
                                     if hasattr(contributor, 'uri') and contributor.uri:
                                         air.a(href=contributor.uri, _t=" Link")
+                        if hasattr(item, 'summary') and item.summary:
+                            with air.p():
+                                air.strong(_t="Summary:")
+                            with air.p(klass="summary"):
+                                air(item.summary.value)
                         if hasattr(item, 'content') and item.content:
                             with air.div(klass="itemdesc"):
                                 air(item.content.value)
