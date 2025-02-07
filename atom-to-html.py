@@ -27,9 +27,10 @@ def make_html(feed):
                 with air.p(klass="link"):
                     air.a(href=feed.link, _t=feed.title)
             with air.div(klass="main"):
-                with air.p(klass="description", style="background-color: rgb(220,220,220); margin: 1em;"):
-                    air.strong(_t="Description: ")
-                    air(feed.description)
+                if hasattr(feed, 'description'):
+                    with air.p(klass="description", style="background-color: rgb(220,220,220); margin: 1em;"):
+                        air.strong(_t="Description: ")
+                        air(feed.description)
                 air.h1(_t="Items")
                 for item in feed.items:
                     with air.div(klass="item", style="border: 1px solid white; margin: 1em; background-color: rgb(231,254,255);"):
