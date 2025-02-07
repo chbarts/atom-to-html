@@ -8,7 +8,7 @@ from airium import Airium
 from datetime import datetime, timezone
 
 def utc_to_local(utc_dt):
-    return utc_dt.now().astimezone()
+    return utc_dt.astimezone()
 
 def make_html(feed):
     air = Airium()
