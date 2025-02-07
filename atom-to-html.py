@@ -36,10 +36,11 @@ def make_html(feed):
                     with air.div(klass="item", style="border: 1px solid white; margin: 1em; background-color: rgb(231,254,255);"):
                         with air.p():
                             air.strong(_t=item.title.value)
-                            air(': ')
-                            date = utc_to_local(item.published)
-                            air(date.strftime("%A, %B %d, %Y %T %z"))
-                            if item.updated:
+                            if hasattr(item, 'published'):
+                                air(': ')
+                                date = utc_to_local(item.published)
+                                air(date.strftime("%A, %B %d, %Y %T %z"))
+                            if hasattr(item, 'updated'):
                                 date = utc_to_local(item.updated)
                                 air(" Updated: {0}".format(date.strftime("%A, %B %d, %Y %T %z")))
                         with air.ol():
