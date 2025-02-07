@@ -32,10 +32,10 @@ def make_html(feed):
                         air.strong(_t="Description: ")
                         air(feed.description)
                 air.h1(_t="Items")
-                for item in feed.items:
+                for item in feed.entries:
                     with air.div(klass="item", style="border: 1px solid white; margin: 1em; background-color: rgb(231,254,255);"):
                         with air.p():
-                            air.strong(_t=item.title)
+                            air.strong(_t=item.title.value)
                             air(': ')
                             date = utc_to_local(item.published)
                             air(date.strftime("%A, %B %d, %Y %T %z"))
@@ -59,7 +59,7 @@ def make_html(feed):
                                     if hasattr(contributor, 'uri'):
                                         air.a(href=contributor.uri, _t=" Link")
                         with air.div(klass="itemdesc"):
-                            air(item.content)
+                            air(item.content.value)
                         with air.div(klass="links", style="background-color: rgba(0,128,64,.25);"):
                             with air.ol():
                                 for link in item.links:
