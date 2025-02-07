@@ -14,18 +14,26 @@ def make_html(feed):
     air = Airium()
     air('<!DOCTYPE html>')
     lang = "en"
+    slink = None
+    hlink = None
+    if hasattr(feed, 'links') and feed.links:
+        for lnk in feed.links:
+            if lnk.rel == 'self':
+                slink = lnk.href
+            if lnk.rel == 'alternate':
+                hlink = lnk.href
     if hasattr(feed, 'lang'):
         lang = feed.lang
     with air.html(lang=lang):
         with air.head():
             air.meta(charset="utf-8")
             air.title(_t=feed.title.value)
-            if hasattr(feed, 'link'):
-                air.link(href=feed.link, type="application/atom+xml", rel="alternate", title=feed.title)
+            if slink:
+                air.link(href=slink, type="application/atom+xml", rel="alternate", title=feed.title.value)
         with air.body():
-            if hasattr(feed, 'link'):
+            if hlink:
                 with air.p(klass="link"):
-                    air.a(href=feed.link, _t=feed.title.value)
+                    air.a(href=hlink, _t=feed.title.value)
             with air.div(klass="main"):
                 if hasattr(feed, 'description'):
                     with air.p(klass="description", style="background-color: rgb(220,220,220); margin: 1em;"):
